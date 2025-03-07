@@ -1,0 +1,29 @@
+project:
+  type: book
+
+book:
+  title: "The Untitled Victoria Project"
+  author: "Victoria Handford"
+  date: "3/14/2025"
+  chapters:
+    - index.qmd
+    - 1-introduction/intro.qmd
+    - 2-related_work/related_work.qmd
+    - 3-models_data/models_data.qmd
+    - 4-methods/methods.qmd
+    - 5-results/results.qmd
+    - 6-discussion/discussion.qmd
+    - 7-conclusion/conclusion.qmd
+    - references.qmd
+    - appendix/appendix.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: cosmo
+  # pdf:
+  #   documentclass: scrreprt
+
+
+

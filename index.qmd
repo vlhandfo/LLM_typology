@@ -1,0 +1,12 @@
+---
+crossref:
+  custom:
+    - key: ex
+      kind: float
+      reference-prefix: Example
+      caption-location: bottom
+---
+
+# Abstract  {.unnumbered}
+
+Submission for [CoNLL 2025](https://conll.org/).

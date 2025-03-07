@@ -1,0 +1,11 @@
+{
+  "hash": "d88854457d15444c992b181f5dffece4",
+  "result": {
+    "engine": "jupyter",
+    "markdown": "---\nexecute: \n  echo: false\n---\n\n\n\n\n\n\n# Results\n\n\n\n## Learning Curve Variation\n\n### Language-Specific  \n\n### Task-Specific  \n\n## Delta Variation\n\n## Typological Correlations\n\n",
+    "supporting": [
+      "results_files/figure-pdf"
+    ],
+    "filters": []
+  }
+}

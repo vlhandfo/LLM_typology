@@ -1,0 +1,57 @@
+,Feature,Hebrew,Indonesian,Korean,Chinese,Greek,Turkish,Japanese,Russian,English,Vietnamese,Persian,Group,Name
+0,GB042,0,0,0,0,1,0,0,1,0,0,0,marking,Is there productive overt morphological singular marking on nouns?
+1,GB043,1,0,0,0,0,0,0,0,0,0,0,marking,Is there productive morphological dual marking on nouns?
+2,GB044,1,0,1,0,1,1,0,1,1,0,1,marking,Is there productive morphological plural marking on nouns?
+3,GB082,1,0,0,0,1,1,1,1,0,0,1,marking,Is there overt morphological marking of present tense on verbs?
+4,GB083,1,0,1,0,1,1,1,1,1,0,1,marking,Is there overt morphological marking on the verb dedicated to past tense?
+5,GB084,1,0,1,0,0,1,0,1,0,0,0,marking,Is there overt morphological marking on the verb dedicated to future tense?
+6,GB086,0,0,1,1,1,1,1,1,0,0,1,marking,Is a morphological distinction between perfective and imperfective aspect available on verbs?
+7,GB089,1,0,0,0,1,1,0,1,1,0,1,marking,Can the S argument be indexed by a suffix/enclitic on the verb in the simple main clause?
+8,GB090,1,0,0,0,0,0,0,0,0,0,0,marking,Can the S argument be indexed by a prefix/proclitic on the verb in the simple main clause?
+9,GB091,1,1,0,0,1,1,0,1,1,0,1,marking,Can the A argument be indexed by a suffix/enclitic on the verb in the simple main clause?
+10,GB092,1,1,0,0,0,0,0,0,0,0,0,marking,Can the A argument be indexed by a prefix/proclitic on the verb in the simple main clause?
+11,GB093,0,1,0,0,0,0,0,0,0,0,1,marking,Can the P argument be indexed by a suffix/enclitic on the verb in the simple main clause?
+12,GB094,1,0,0,0,0,0,0,0,0,0,0,marking,Can the P argument be indexed by a prefix/proclitic on the verb in the simple main clause?
+13,GB095,1,0,0,0,0,0,0,0,1,0,0,marking,Are variations in marking strategies of core participants based on TAM distinctions?
+14,GB098,0,0,0,0,0,0,0,1,1,0,0,marking,Are variations in marking strategies of core participants based on person distinctions?
+15,GB103,0,0,0,0,0,0,0,0,0,0,1,marking,Is there a benefactive applicative marker on the verb (including indexing)?
+16,GB107,0,0,1,0,0,1,1,0,1,0,1,marking,"Can standard negation be marked by an affix, clitic or modification of the verb?"
+17,GB147,1,0,1,0,1,1,1,1,0,0,1,marking,Is there a morphological passive marked on the lexical verb?
+18,GB047,1,1,1,0,1,1,1,1,1,0,1,formation,Is there a productive morphological pattern for deriving an action/state noun from a verb?
+19,GB048,1,1,1,0,1,1,0,1,1,0,1,formation,Is there a productive morphological pattern for deriving an agent noun from a verb?
+20,GB049,1,1,1,0,1,1,1,1,1,0,1,formation,Is there a productive morphological pattern for deriving an object noun from a verb?
+21,GB081,0,0,0,0,1,0,0,0,0,0,0,formation,Is there productive infixation in verbs?
+22,GB122,0,0,1,1,0,0,1,0,0,0,0,formation,Is verb compounding a regular process?
+23,GB124,0,0,1,0,0,0,0,0,0,0,0,formation,Is incorporation of nouns into verbs a productive intransitivizing process?
+24,GB150,0,0,1,1,0,1,1,0,0,0,0,formation,Is there clause chaining?
+25,GB020,1,0,0,0,1,0,0,0,1,1,1,determiners,Are there definite or specific articles?
+26,GB022,1,0,0,0,1,1,0,0,1,1,1,determiners,Are there prenominal articles?
+27,GB023,0,0,0,0,0,0,0,0,0,0,1,determiners,Are there postnominal articles?
+28,GB035,0,0,1,0,0,1,1,0,0,1,0,determiners,Are there three or more distance contrasts in demonstratives?
+29,GB037,0,0,0,0,0,0,0,0,0,1,0,determiners,Do demonstratives show a visible-nonvisible distinction?
+30,GB057,0,1,1,1,0,0,1,0,0,1,0,determiners,Are there numeral classifiers?
+31,GB070,0,0,1,0,1,1,1,1,0,0,1,case,Are there morphological cases for non-pronominal core arguments (i.e. S/A/P)?
+32,GB071,0,0,0,0,1,1,1,1,1,0,1,case,Are there morphological cases for pronominal core arguments (i.e. S/A/P)?
+33,GB072,0,0,1,0,0,1,1,1,0,0,0,case,Are there morphological cases for oblique non-pronominal NPs (i.e. not S/A/P)?
+34,GB073,0,0,1,0,0,1,1,1,0,0,1,case,Are there morphological cases for independent oblique personal pronominal arguments (i.e. not S/A/P)?
+35,GB074,1,1,0,1,1,0,0,1,1,1,1,lexicon,Are there prepositions?
+36,GB075,0,0,1,0,0,1,1,0,0,0,0,lexicon,Are there postpositions?
+37,GB117,1,1,1,1,1,1,1,1,1,0,1,lexicon,Is there a copula for predicate nominals?
+38,GB126,0,1,1,1,1,1,1,1,1,1,0,lexicon,Is there an existential verb?
+39,GB030,1,0,0,0,1,0,1,1,1,0,0,lexicon,Is there a gender distinction in independent 3rd person pronouns?
+40,GB132,1,1,0,1,1,0,0,1,1,1,0,order,Is a pragmatically unmarked constituent order verb-medial for transitive clauses?
+41,GB133,0,0,1,0,0,1,1,1,0,0,1,order,Is a pragmatically unmarked constituent order verb-final for transitive clauses?
+42,WALS81A,1,1,0,1,0,0,0,1,1,1,0,order,Is the dominant word order in a transitive clause SVO?
+43,WALS83A,1,1,0,1,1,0,0,1,1,1,0,order,Is the dominant word order of lexical object and verb VO?
+44,WALS85A,1,1,0,0,1,0,0,1,1,1,1,order,Are prepositions the dominant type of adposition with a noun phrase?
+45,WALS86A,1,1,0,0,1,0,0,1,0,1,1,order,Is the dominant order in a genitive noun phrase NGen?
+46,WALS87A,0,0,1,1,1,1,1,1,1,0,0,order,Is the dominant order of modifying adjective and noun AdjN?
+47,WALS88A,0,0,1,1,1,1,1,1,1,0,1,order,Is the dominant order of demonstrative and noun DemN?
+48,WALS90A,1,1,0,0,1,0,0,1,1,1,1,order,Does a relative clause predominatly follow a noun?
+49,WALS92A,0,0,0,1,0,1,1,0,0,1,0,order,Does a question particle predominatly come at the end of a sentence?
+50,WALS93A,1,0,0,0,1,0,0,1,1,0,0,order,Is the position of interrogative phrases obligatory initial in content questions?
+51,WALS95A,1,1,0,0,1,0,0,1,1,1,0,order,"Is the dominant word order for object, verb, and adposition VO&Prep?"
+52,WALS96A,1,1,0,0,1,0,0,1,1,1,0,order,"Is the dominant word order for object, verb, and relative clause VO&NRel?"
+53,WALS97A,1,1,0,0,0,0,0,0,0,1,0,order,"Is the dominant word order for object, verb, and adjective VO&NAdj?"
+54,WALS143A,1,1,1,1,1,0,0,1,1,1,0,order,Does clausal negation predominantly precede the verb?
+55,WALS144A,1,1,0,1,0,0,0,1,1,1,0,order,Is the order of negation predominantly SNegVO?

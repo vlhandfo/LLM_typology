@@ -1,0 +1,54 @@
+---
+execute: 
+  echo: false
+---
+
+# Appendix {.unnumbered}
+
+## All Features
+```{python}
+import pandas as pd
+import altair as alt
+
+from itables import show
+from pathlib import Path
+
+DATA_DIR = Path("../data")
+
+assert DATA_DIR.exists() and DATA_DIR.is_dir(), "Invalid path to data directory."
+
+feats_df = pd.read_csv(DATA_DIR / "feature_values.csv", index_col=0)
+p90_df = pd.read_csv(DATA_DIR / "p90_df.csv"
+    ).set_index('Language'
+    ).rename(columns=lambda x: x.split("_")[1])
+
+delta_df = pd.read_csv(DATA_DIR / "delta_df.csv"
+    ).set_index('Language'
+    ).rename(columns=lambda x: x.split("_")[1])
+
+show(feats_df[['Feature', 'Name', 'Group']],
+    paging=True,
+    #scrollY="600px", scrollCollapse=True, paging=False,
+    classes="compact",
+    showIndex=False,
+    select="multi",
+    )
+```
+
+## Raw P90 Thresholds
+
+```{python}
+# For showing that the language reaches p90 before 100M
+p90_df['Threshold'] = [1 if x >= 2 else 0 
+                       for x in p90_df.min(axis=1)]
+
+show(p90_df[p90_df.columns[:-1]], 
+    classes="compact", 
+    paging=False)
+```
+
+## Raw Delta Values
+
+```{python}
+show(delta_df, classes="compact", paging=False)
+```

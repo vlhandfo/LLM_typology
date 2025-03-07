@@ -1,0 +1,16 @@
+# Related Work
+
+@Zhang_Warstadt_Li_Bowman_2021
+
+## Typological Databases {#sec-databases}
+
+### WALS 
+
+@wals  
+<!--NOTE: THIS IS COPIED DIRECTLY FROM MY ESSAY-->
+The World Atlas of Language Structures (WALS) is a collection of linguistic features documenting the structural elements of many of the world’s languages. This database contains data on a variety of properties including, but not limited to, phonology, grammar, lexicon, language family, and the general location of where the language is most spoken. Since languages are grouped into categories based on what they predominately exhibit, it is a useful resource for exploring the typological features of languages and cross-linguistic patterns (@wals).
+
+### Grambank 
+
+@grambank_dataset_zenodo_v1  
+Grambank is another database that compiles various grammatical features for cross-linguistic analyses. Most of the features are structured as questions where the corresponding feature values are coded as 0 if the answer is no and 1 if yes. This database and its encodings are the foundation for vector representations of the languages. 

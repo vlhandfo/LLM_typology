@@ -1,0 +1,85 @@
+---
+execute: 
+  echo: false
+---
+
+# Models and Data
+
+
+## The HPLT Project
+
+The High-Performance Language Technology (HPLT) project seeks to combine large amounts of data and tools for high-performance computing to produce and make high-quality language models available @de-gibert-etal-2024-new-massive. It provides large datasets for a variety of languages and base models trained on them. *These datasets and models are the foundation of our experiments.*
+
+**TODO**: write about them pretraining the models and providing intermediate checkpoints
+
+## Evaluation Data
+<!-- \citep[UD;][]{nivre-etal-2017-universal, nivre-etal-2020-universal} -->
+To evaluate each language model, we use the Universal Dependencies 2.14 treebanks (UD; @nivre-etal-2017-universal, -@nivre-etal-2020-universal). The treebanks are formatted in the same way which allows for simpler comparison of the results of the cross-linguistic experiments. Likewise, as the treebanks include text from different genres, the data covers a broad range of language use. 
+
+The treebanks for the selected languages vary in size, both in terms of number of words and sentences. To ensure the comparability of the results, subsets of each partition of the treebanks were shuffled and normalized by the number of word forms. While the number of sentences in the result subsets still varies, this step makes sure that each model encounters roughly the same number of tokens during the fine-tuning and evaluation steps.
+
+## Language and Feature Selection
+
+The languages for this study were chosen based on two criteria: the availability of resources and linguistic diversity. Available resources include the size of the dataset from the HPLT project and the treebanks from Universal Dependencies, as well as the typological features available in the databases (see @sec-databases). Linguistic diversity was determined by examining typological, genealogical, and geographic differences available in WALS, specifically the [WALS 100-sample](https://wals.info/chapter/s1#3.1._The_WALS_samples). 
+
+The features were selected from WALS and Grambank, and those from the WALS database were manually coverted to the Question: Binary Encoding format of the Grambank features (e.g., "81A: Order of Subject, Object and Verb" from WALS became *WALS81A: Is the dominant word order in a transitive clause SVO?*)
+
+After identifying relevant morphosyntactic features, the set was filtered, removing features with no variance and/or missing values for any selected language. Then, each feature was categorized into a group according to the type of feature it is related to. The largest group, *marking*, relate to grammatical phenomena which morphologically indicated on words. *Order* are features related to aspects of word order and syntax. Features in the group *formation* represent different methods for creating words and clauses. The groups *determiners* and *lexicon* correspond to the types of determiners and words, respectively. Lastly, *case* pertains to morphological marking of cases. A complete list of selected features is shown in @tbl-all-features.
+
+With the features and language selected, it was straight-forward to combine all of the values to create a binary vector representation for each language. @fig-pca-langs shows the PCA of the languages according to these vector representations.
+
+:::{#fig-pca-langs}
+```{python}
+
+import pandas as pd
+import altair as alt
+
+from itables import show
+from pathlib import Path
+
+from sklearn.decomposition import PCA
+
+DATA_DIR = Path("../data")
+
+assert DATA_DIR.exists() and DATA_DIR.is_dir(), "Invalid path to data directory."
+
+feats_df = pd.read_csv(DATA_DIR / "feature_values.csv", index_col=0).set_index('Feature')
+
+# Plot the representation of each language in 2D space
+pca = PCA(n_components=2)
+pca_result = pca.fit_transform(feats_df.drop(columns=['Name', 'Group']).T)
+
+# Create a DataFrame with the PCA results
+pca_df = pd.DataFrame(pca_result, columns=['x', 'y'])
+pca_df['Language'] = feats_df.T.index[:-2]
+
+# Plot the PCA results
+chart = alt.Chart(pca_df).mark_circle(size=50, fillOpacity=1).encode(
+    x=alt.X('x', axis=alt.Axis(labels=False, title="")),
+    y=alt.Y('y', axis=alt.Axis(labels=False, title="")),
+    tooltip=['Language'],
+    color=alt.Color('Language', scale=alt.Scale(scheme="category20"))
+).properties(
+    title='PCA of Language Features',
+    height=350,
+    width=350
+)
+chart.show()
+```
+
+PCA of the selected languages according to their feature values.
+:::
+
+### Selected Features
+
+:::{#tbl-all-features tbl-cap-location=bottom}
+
+```{python}
+show(
+  feats_df.reset_index()[['Feature', 'Name', 'Group']],
+  classes="compact"
+  )
+```
+
+An overview of all selected features and assigned group. The prefix GB indicates a feature from Grambank, and WALS is the adapted feature from the WALS database.
+:::

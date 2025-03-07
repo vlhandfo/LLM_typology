@@ -1,0 +1,190 @@
+---
+execute: 
+  echo: false
+---
+
+# Results
+
+```{python}
+import pandas as pd
+import altair as alt
+import utils
+
+from itables import show
+from pathlib import Path
+from scipy.stats import pearsonr
+
+DATA_DIR = Path("../data")
+
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_UAS"]
+
+assert DATA_DIR.exists() and DATA_DIR.is_dir(), "Invalid path to data directory."
+
+FEATS_DF = pd.read_csv(DATA_DIR / "feature_values.csv", index_col=0)
+p90_df = pd.read_csv(DATA_DIR / "p90_df.csv")
+
+delta_df = pd.read_csv(DATA_DIR / "delta_df.csv")
+
+df = pd.read_csv(DATA_DIR / "metrics_df.csv")
+fit_df = pd.read_csv(DATA_DIR / "fit_data.csv")
+```
+
+## Learning Curve Variation
+
+### Variation of a Model
+:::{#fig-curve-variation}
+```{python}
+langs = ['ja', 'en', 'zh']
+domain = [0, 101]
+title = "Learning Curves for Selected Models"
+
+charts = utils.get_charts_for_langs(langs, df[df['Task'].isin(tasks)], fit_df[fit_df['Task'].isin(tasks)], domain)
+
+alt.vconcat(*charts).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+While the learning curves for English model are rather homogenous, it is not the case for the Japanese model. The learning curves for the Chinese models on UAS and Lemmas are similar to the English model, however, all checkpoints of the Chinese model achieve $> 99\%$ accuracy on lemmatization.
+::: 
+
+### Variation on the Same Task
+
+:::{#fig-task-variation fig-align="center"}
+```{python}
+title="Learning Curve for All Languages on Selected Tasks"
+
+charts = utils.get_charts_for_tasks(tasks, df, fit_df)
+
+alt.hconcat(*charts
+).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+Given a task, different models may learn at different rates than others.
+:::
+
+## Delta Variation
+
+:::{#fig-delta-variation fig-align="center"}
+```{python}
+selected_languages = ["Vietnamese", "Chinese", "English", "Korean", "Russian"]
+y_domain = [0,55]
+
+melted_df = delta_df[['Language'] + tasks].melt(id_vars='Language', 
+              var_name='Task', 
+              value_name='Delta'
+            )
+melted_df = melted_df[melted_df['Language'].isin(selected_languages)]
+
+charts = []
+for lang in selected_languages:
+    _df = melted_df[melted_df['Language'] == lang]
+    charts.append(alt.Chart(_df).mark_bar().encode(
+        x=alt.X(
+            "Task:N", 
+            sort=None, 
+            axis=alt.Axis(labelAngle=-45, title=None)
+        ),
+        y=alt.Y(
+            "Delta:Q", 
+            scale=alt.Scale(domain=y_domain)
+        ),
+        tooltip=["Task:N", "Delta:Q", "Language:N"]
+    ).properties(
+        title=lang,
+        height=125,
+        width=75
+    ))
+
+alt.hconcat(*charts).show()
+```
+
+The amount of improvement (delta) varies across different tasks and models.
+:::
+
+## Typological Correlations
+
+```{python}
+def get_correlation_df(feats_df, target_df, threshold=0.05):
+    GROUPS = ['marking', 'formation', 'determiners', 'case', 'lexicon', 'order']
+    res = []
+    for task in target_df.columns:
+        # define the target
+        target = target_df[task]
+        for group in GROUPS:
+            # get the subset of features in the group
+            group_feats = feats_df[feats_df['Group'] == group].drop(columns="Group")
+            # convert to language vectors
+            lang_vec = group_feats.T
+            # remove features with low variance
+            for c in lang_vec.columns:
+                if lang_vec[c].value_counts()[0] <= 2:
+                    lang_vec = lang_vec.drop(columns=c)
+                elif lang_vec[c].value_counts()[1] <= 2:
+                    lang_vec = lang_vec.drop(columns=c)
+            # add group sum as predictor
+            lang_vec[f'{group}_sum'] = lang_vec.sum(axis=1)
+            lang_vec = pd.concat((lang_vec, target), axis=1).sort_values(task).drop('Indonesian')
+            
+            # Calculate the pearson correlation
+            for c in lang_vec.columns[:-1]:
+                _corr = pearsonr(lang_vec[c], lang_vec[task])
+                if _corr.pvalue < threshold:
+                    res.append([
+                                task, 
+                                group,
+                                c, 
+                                _corr.statistic,
+                                _corr.pvalue
+                                ])
+    res_df = pd.DataFrame(res, columns=['Task', 'Group', "Feature", "Correlation", "PValue"]).sort_values('Correlation', ascending=False)
+    res_df = res_df.merge(FEATS_DF[['Feature', 'Name']], left_on='Feature', right_on='Feature', how='left'
+                      )
+    return res_df
+
+feats_df = FEATS_DF.copy(
+    ).set_index("Feature", drop=True
+    ).drop(columns=["Name"])
+```
+
+:::{#tbl-corr-p90}
+```{python}
+p90_corr = get_correlation_df(
+            feats_df, 
+            p90_df.set_index('Language'), 
+            threshold=0.01
+            )
+p90_corr['Feature'] = p90_corr['Feature'] + " (" + p90_corr['Group'] + ")"
+p90_corr = p90_corr.set_index('Feature', drop=True
+            ).drop(columns=['PValue', 'Group']
+            ).sort_index()
+show(p90_corr[['Name', 'Task', 'Correlation']],
+    classes="compact",
+    lengthMenu=[5, 10]
+)
+```
+
+Feature correlations with P90 and pvalue <0.01.
+:::
+
+:::{#tbl-corr-delta}
+```{python}
+delta_corr = get_correlation_df(
+            feats_df, 
+            delta_df.set_index('Language'), 
+            threshold=0.01
+            )
+delta_corr['Feature'] = delta_corr['Feature'] + " (" + delta_corr['Group'] + ")"
+delta_corr = delta_corr.set_index('Feature', drop=True
+            ).drop(columns=['PValue', 'Group']
+            ).sort_index()
+show(delta_corr[['Name', 'Task', 'Correlation']],
+    classes="compact",
+    lengthMenu=[5, 10]
+)
+```
+
+Feature correlations with Delta and pvalue <0.01.
+:::

@@ -1,0 +1,19 @@
+# Methods
+
+All checkpoints for the models were fine-tuned with the scripts from the HPLT project [^1]. The same hyperparameters were used, and no significant parameter search was performed. 
+
+[^1]: HPLT Tools: [https://github.com/hplt-project/HPLT-WP4](https://github.com/hplt-project/HPLT-WP4)
+
+## Evaluation
+
+- Uses the evaluation script from [CoNLL 2018 Shared Task](https://universaldependencies.org/conll18/)
+- Maybe don't need to include all metrics in this paper (?): Considers on Lemmas, UPOS, UAS, LAS, CLAS, MLAS, BLEX
+
+## Analysis
+
+Following the procedure in @Zhang_Warstadt_Li_Bowman_2021, we compare the relative results of the performance of each checkpoint. 
+
+- get statistics: 
+    - delta: the amount of improvement
+    - P90: the estimated point where the model reaches 90 percent of it's overall performance gains.
+        - max-min normalization -> best fit curve.

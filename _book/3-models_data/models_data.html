@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.15">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>3&nbsp; Models and Data – The Untitled Victoria Project</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script><script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../4-methods/methods.html" rel="next">
+<link href="../2-related_work/related_work.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-018089954d508eae8a473f0b7f0491f0.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-55a5a5499c3e54a09d46ee25f1936882.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../3-models_data/models_data.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Models and Data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">The Untitled Victoria Project</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Abstract</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../1-introduction/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../2-related_work/related_work.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Related Work</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../3-models_data/models_data.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Models and Data</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../4-methods/methods.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Methods</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../5-results/results.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Results</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../6-discussion/discussion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Discussion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../7-conclusion/conclusion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Conclusion</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../appendix/appendix.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Appendix</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#the-hplt-project" id="toc-the-hplt-project" class="nav-link active" data-scroll-target="#the-hplt-project"><span class="header-section-number">3.1</span> The HPLT Project</a></li>
+  <li><a href="#evaluation-data" id="toc-evaluation-data" class="nav-link" data-scroll-target="#evaluation-data"><span class="header-section-number">3.2</span> Evaluation Data</a></li>
+  <li><a href="#language-and-feature-selection" id="toc-language-and-feature-selection" class="nav-link" data-scroll-target="#language-and-feature-selection"><span class="header-section-number">3.3</span> Language and Feature Selection</a>
+  <ul class="collapse">
+  <li><a href="#selected-features" id="toc-selected-features" class="nav-link" data-scroll-target="#selected-features"><span class="header-section-number">3.3.1</span> Selected Features</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Models and Data</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="the-hplt-project" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="the-hplt-project"><span class="header-section-number">3.1</span> The HPLT Project</h2>
+<p>The High-Performance Language Technology (HPLT) project seeks to combine large amounts of data and tools for high-performance computing to produce and make high-quality language models available <span class="citation" data-cites="de-gibert-etal-2024-new-massive">Gibert et al. (<a href="../references.html#ref-de-gibert-etal-2024-new-massive" role="doc-biblioref">2024</a>)</span>. It provides large datasets for a variety of languages and base models trained on them. <em>These datasets and models are the foundation of our experiments.</em></p>
+<p><strong>TODO</strong>: write about them pretraining the models and providing intermediate checkpoints</p>
+</section>
+<section id="evaluation-data" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="evaluation-data"><span class="header-section-number">3.2</span> Evaluation Data</h2>
+<!-- \citep[UD;][]{nivre-etal-2017-universal, nivre-etal-2020-universal} -->
+<p>To evaluate each language model, we use the Universal Dependencies 2.14 treebanks (UD; <span class="citation" data-cites="nivre-etal-2017-universal">Nivre et al. (<a href="../references.html#ref-nivre-etal-2017-universal" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="nivre-etal-2020-universal">(<a href="../references.html#ref-nivre-etal-2020-universal" role="doc-biblioref">2020</a>)</span>). The treebanks are formatted in the same way which allows for simpler comparison of the results of the cross-linguistic experiments. Likewise, as the treebanks include text from different genres, the data covers a broad range of language use.</p>
+<p>The treebanks for the selected languages vary in size, both in terms of number of words and sentences. To ensure the comparability of the results, subsets of each partition of the treebanks were shuffled and normalized by the number of word forms. While the number of sentences in the result subsets still varies, this step makes sure that each model encounters roughly the same number of tokens during the fine-tuning and evaluation steps.</p>
+</section>
+<section id="language-and-feature-selection" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="language-and-feature-selection"><span class="header-section-number">3.3</span> Language and Feature Selection</h2>
+<p>The languages for this study were chosen based on two criteria: the availability of resources and linguistic diversity. Available resources include the size of the dataset from the HPLT project and the treebanks from Universal Dependencies, as well as the typological features available in the databases (see <a href="../2-related_work/related_work.html#sec-databases" class="quarto-xref"><span>Section 2.1</span></a>). Linguistic diversity was determined by examining typological, genealogical, and geographic differences available in WALS, specifically the <a href="https://wals.info/chapter/s1#3.1._The_WALS_samples">WALS 100-sample</a>.</p>
+<p>The features were selected from WALS and Grambank, and those from the WALS database were manually coverted to the Question: Binary Encoding format of the Grambank features (e.g., “81A: Order of Subject, Object and Verb” from WALS became <em>WALS81A: Is the dominant word order in a transitive clause SVO?</em>)</p>
+<p>After identifying relevant morphosyntactic features, the set was filtered, removing features with no variance and/or missing values for any selected language. Then, each feature was categorized into a group according to the type of feature it is related to. The largest group, <em>marking</em>, relate to grammatical phenomena which morphologically indicated on words. <em>Order</em> are features related to aspects of word order and syntax. Features in the group <em>formation</em> represent different methods for creating words and clauses. The groups <em>determiners</em> and <em>lexicon</em> correspond to the types of determiners and words, respectively. Lastly, <em>case</em> pertains to morphological marking of cases. A complete list of selected features is shown in <a href="#tbl-all-features" class="quarto-xref">Table&nbsp;<span>3.1</span></a>.</p>
+<p>With the features and language selected, it was straight-forward to combine all of the values to create a binary vector representation for each language. <a href="#fig-pca-langs" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the PCA of the languages according to these vector representations.</p>
+<div id="fig-pca-langs" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pca-langs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="ce8de148" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-display">
+
+<style>
+  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed {
+    width: 100%;
+    display: flex;
+  }
+
+  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed details,
+  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed details summary {
+    position: relative;
+  }
+</style>
+<div id="altair-viz-15a2f4f488e14c58be8f058d7204b6b9"></div>
+<script type="text/javascript">
+  var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
+  (function(spec, embedOpt){
+    let outputDiv = document.currentScript.previousElementSibling;
+    if (outputDiv.id !== "altair-viz-15a2f4f488e14c58be8f058d7204b6b9") {
+      outputDiv = document.getElementById("altair-viz-15a2f4f488e14c58be8f058d7204b6b9");
+    }
+    const paths = {
+      "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
+      "vega-lib": "https://cdn.jsdelivr.net/npm/vega-lib?noext",
+      "vega-lite": "https://cdn.jsdelivr.net/npm/vega-lite@5.20.1?noext",
+      "vega-embed": "https://cdn.jsdelivr.net/npm/vega-embed@6?noext",
+    };
+
+    function maybeLoadScript(lib, version) {
+      var key = `${lib.replace("-", "")}_version`;
+      return (VEGA_DEBUG[key] == version) ?
+        Promise.resolve(paths[lib]) :
+        new Promise(function(resolve, reject) {
+          var s = document.createElement('script');
+          document.getElementsByTagName("head")[0].appendChild(s);
+          s.async = true;
+          s.onload = () => {
+            VEGA_DEBUG[key] = version;
+            return resolve(paths[lib]);
+          };
+          s.onerror = () => reject(`Error loading script: ${paths[lib]}`);
+          s.src = paths[lib];
+        });
+    }
+
+    function showError(err) {
+      outputDiv.innerHTML = `<div class="error" style="color:red;">${err}</div>`;
+      throw err;
+    }
+
+    function displayChart(vegaEmbed) {
+      vegaEmbed(outputDiv, spec, embedOpt)
+        .catch(err => showError(`Javascript Error: ${err.message}<br>This usually means there's a typo in your chart specification. See the javascript console for the full traceback.`));
+    }
+
+    if(typeof define === "function" && define.amd) {
+      requirejs.config({paths});
+      require(["vega-embed"], displayChart, err => showError(`Error loading script: ${err.message}`));
+    } else {
+      maybeLoadScript("vega", "5")
+        .then(() => maybeLoadScript("vega-lite", "5.20.1"))
+        .then(() => maybeLoadScript("vega-embed", "6"))
+        .catch(showError)
+        .then(() => displayChart(vegaEmbed));
+    }
+  })({"config": {"view": {"continuousWidth": 300, "continuousHeight": 300}}, "data": {"name": "data-d61a97ccdcb94a665895d851e2dac2de"}, "mark": {"type": "circle", "fillOpacity": 1, "size": 50}, "encoding": {"color": {"field": "Language", "scale": {"scheme": "category20"}, "type": "nominal"}, "tooltip": [{"field": "Language", "type": "nominal"}], "x": {"axis": {"labels": false, "title": ""}, "field": "x", "type": "quantitative"}, "y": {"axis": {"labels": false, "title": ""}, "field": "y", "type": "quantitative"}}, "height": 350, "title": "PCA of Language Features", "width": 350, "$schema": "https://vega.github.io/schema/vega-lite/v5.20.1.json", "datasets": {"data-d61a97ccdcb94a665895d851e2dac2de": [{"x": 2.4923757844818564, "y": 1.1058132062802086, "Language": "Hebrew"}, {"x": 2.0793745147852536, "y": -1.3710305443714264, "Language": "Indonesian"}, {"x": -2.8191375046736575, "y": -0.6631654459462123, "Language": "Korean"}, {"x": -0.15711811244745852, "y": -2.810490797468748, "Language": "Chinese"}, {"x": 0.9112100710313085, "y": 1.783714062238656, "Language": "Greek"}, {"x": -2.7385238035784885, "y": 0.7705060006570823, "Language": "Turkish"}, {"x": -3.0321807406295127, "y": -0.720465145158066, "Language": "Japanese"}, {"x": 0.4432530861482329, "y": 1.701162005651105, "Language": "Russian"}, {"x": 1.6097109977173907, "y": 0.8773364310069025, "Language": "English"}, {"x": 1.9783528597154485, "y": -2.4035002882797443, "Language": "Vietnamese"}, {"x": -0.7673171525503748, "y": 1.7301205153902453, "Language": "Persian"}]}}, {"mode": "vega-lite"});
+</script>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pca-langs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: PCA of the selected languages according to their feature values.
+</figcaption>
+</figure>
+</div>
+<section id="selected-features" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="selected-features"><span class="header-section-number">3.3.1</span> Selected Features</h3>
+<div id="tbl-all-features" class="quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="bottom">
+<figure class="quarto-float quarto-float-tbl figure">
+<div aria-describedby="tbl-all-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div id="471d6ce8" class="cell" data-execution_count="2">
+<div class="cell-output cell-output-display">
+<table id="itables_c468ea43_6b93_4be6_88af_a43ee6d15a1b" class="compact" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<thead>
+    <tr style="text-align: right;">
+      
+      <th>Feature</th>
+      <th>Name</th>
+      <th>Group</th>
+    </tr>
+  </thead><tbody><tr>
+<td style="vertical-align:middle; text-align:left">
+<div style="float:left; margin-right: 10px;">
+<a href="https://mwouts.github.io/itables/"><svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" width="64" viewbox="0 0 500 400" style="font-family: 'Droid Sans', sans-serif;">
+    <g style="fill:#d9d7fc">
+        <path d="M100,400H500V357H100Z"></path>
+        <path d="M100,300H400V257H100Z"></path>
+        <path d="M0,200H400V157H0Z"></path>
+        <path d="M100,100H500V57H100Z"></path>
+        <path d="M100,350H500V307H100Z"></path>
+        <path d="M100,250H400V207H100Z"></path>
+        <path d="M0,150H400V107H0Z"></path>
+        <path d="M100,50H500V7H100Z"></path>
+    </g>
+    <g style="fill:#1a1366;stroke:#1a1366;">
+   <rect x="100" y="7" width="400" height="43">
+    <animate attributename="width" values="0;400;0" dur="5s" repeatcount="indefinite"></animate>
+      <animate attributename="x" values="100;100;500" dur="5s" repeatcount="indefinite"></animate>
+  </rect>
+        <rect x="0" y="107" width="400" height="43">
+    <animate attributename="width" values="0;400;0" dur="3.5s" repeatcount="indefinite"></animate>
+    <animate attributename="x" values="0;0;400" dur="3.5s" repeatcount="indefinite"></animate>
+  </rect>
+        <rect x="100" y="207" width="300" height="43">
+    <animate attributename="width" values="0;300;0" dur="3s" repeatcount="indefinite"></animate>
+    <animate attributename="x" values="100;100;400" dur="3s" repeatcount="indefinite"></animate>
+  </rect>
+        <rect x="100" y="307" width="400" height="43">
+    <animate attributename="width" values="0;400;0" dur="4s" repeatcount="indefinite"></animate>
+      <animate attributename="x" values="100;100;500" dur="4s" repeatcount="indefinite"></animate>
+  </rect>
+        <g style="fill:transparent;stroke-width:8; stroke-linejoin:round" rx="5">
+            <g transform="translate(45 50) rotate(-45)">
+                <circle r="33" cx="0" cy="0"></circle>
+                <rect x="-8" y="32" width="16" height="30"></rect>
+            </g>
+
+            <g transform="translate(450 152)">
+                <polyline points="-15,-20 -35,-20 -35,40 25,40 25,20"></polyline>
+                <rect x="-15" y="-40" width="60" height="60"></rect>
+            </g>
+
+            <g transform="translate(50 352)">
+                <polygon points="-35,-5 0,-40 35,-5"></polygon>
+                <polygon points="-35,10 0,45 35,10"></polygon>
+            </g>
+
+            <g transform="translate(75 250)">
+                <polyline points="-30,30 -60,0 -30,-30"></polyline>
+                <polyline points="0,30 -30,0 0,-30"></polyline>
+            </g>
+
+            <g transform="translate(425 250) rotate(180)">
+                <polyline points="-30,30 -60,0 -30,-30"></polyline>
+                <polyline points="0,30 -30,0 0,-30"></polyline>
+            </g>
+        </g>
+    </g>
+</svg>
+</a>
+</div>
+<div>
+Loading ITables v2.2.1 from the internet...
+(need <a href="https://mwouts.github.io/itables/troubleshooting.html">help</a>?)</div></td>
+
+</tr></tbody>
+
+</table>
+<link href="https://www.unpkg.com/dt_for_itables@2.0.13/dt_bundle.css" rel="stylesheet">
+<script type="module">
+    import {DataTable, jQuery as $} from 'https://www.unpkg.com/dt_for_itables@2.0.13/dt_bundle.js';
+
+    document.querySelectorAll("#itables_c468ea43_6b93_4be6_88af_a43ee6d15a1b:not(.dataTable)").forEach(table => {
+        // Define the table data
+        const data = [["GB042", "Is there productive overt morphological singular marking on nouns?", "marking"], ["GB043", "Is there productive morphological dual marking on nouns?", "marking"], ["GB044", "Is there productive morphological plural marking on nouns?", "marking"], ["GB082", "Is there overt morphological marking of present tense on verbs?", "marking"], ["GB083", "Is there overt morphological marking on the verb dedicated to past tense?", "marking"], ["GB084", "Is there overt morphological marking on the verb dedicated to future tense?", "marking"], ["GB086", "Is a morphological distinction between perfective and imperfective aspect available on verbs?", "marking"], ["GB089", "Can the S argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB090", "Can the S argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB091", "Can the A argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB092", "Can the A argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB093", "Can the P argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB094", "Can the P argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB095", "Are variations in marking strategies of core participants based on TAM distinctions?", "marking"], ["GB098", "Are variations in marking strategies of core participants based on person distinctions?", "marking"], ["GB103", "Is there a benefactive applicative marker on the verb (including indexing)?", "marking"], ["GB107", "Can standard negation be marked by an affix, clitic or modification of the verb?", "marking"], ["GB147", "Is there a morphological passive marked on the lexical verb?", "marking"], ["GB047", "Is there a productive morphological pattern for deriving an action/state noun from a verb?", "formation"], ["GB048", "Is there a productive morphological pattern for deriving an agent noun from a verb?", "formation"], ["GB049", "Is there a productive morphological pattern for deriving an object noun from a verb?", "formation"], ["GB081", "Is there productive infixation in verbs?", "formation"], ["GB122", "Is verb compounding a regular process?", "formation"], ["GB124", "Is incorporation of nouns into verbs a productive intransitivizing process?", "formation"], ["GB150", "Is there clause chaining?", "formation"], ["GB020", "Are there definite or specific articles?", "determiners"], ["GB022", "Are there prenominal articles?", "determiners"], ["GB023", "Are there postnominal articles?", "determiners"], ["GB035", "Are there three or more distance contrasts in demonstratives?", "determiners"], ["GB037", "Do demonstratives show a visible-nonvisible distinction?", "determiners"], ["GB057", "Are there numeral classifiers?", "determiners"], ["GB070", "Are there morphological cases for non-pronominal core arguments (i.e. S/A/P)?", "case"], ["GB071", "Are there morphological cases for pronominal core arguments (i.e. S/A/P)?", "case"], ["GB072", "Are there morphological cases for oblique non-pronominal NPs (i.e. not S/A/P)?", "case"], ["GB073", "Are there morphological cases for independent oblique personal pronominal arguments (i.e. not S/A/P)?", "case"], ["GB074", "Are there prepositions?", "lexicon"], ["GB075", "Are there postpositions?", "lexicon"], ["GB117", "Is there a copula for predicate nominals?", "lexicon"], ["GB126", "Is there an existential verb?", "lexicon"], ["GB030", "Is there a gender distinction in independent 3rd person pronouns?", "lexicon"], ["GB132", "Is a pragmatically unmarked constituent order verb-medial for transitive clauses?", "order"], ["GB133", "Is a pragmatically unmarked constituent order verb-final for transitive clauses?", "order"], ["WALS81A", "Is the dominant word order in a transitive clause SVO?", "order"], ["WALS83A", "Is the dominant word order of lexical object and verb VO?", "order"], ["WALS85A", "Are prepositions the dominant type of adposition with a noun phrase?", "order"], ["WALS86A", "Is the dominant order in a genitive noun phrase NGen?", "order"], ["WALS87A", "Is the dominant order of modifying adjective and noun AdjN?", "order"], ["WALS88A", "Is the dominant order of demonstrative and noun DemN?", "order"], ["WALS90A", "Does a relative clause predominatly follow a noun?", "order"], ["WALS92A", "Does a question particle predominatly come at the end of a sentence?", "order"], ["WALS93A", "Is the position of interrogative phrases obligatory initial in content questions?", "order"], ["WALS95A", "Is the dominant word order for object, verb, and adposition VO&Prep?", "order"], ["WALS96A", "Is the dominant word order for object, verb, and relative clause VO&NRel?", "order"], ["WALS97A", "Is the dominant word order for object, verb, and adjective VO&NAdj?", "order"], ["WALS143A", "Does clausal negation predominantly precede the verb?", "order"], ["WALS144A", "Is the order of negation predominantly SNegVO?", "order"]];
+
+        // Define the dt_args
+        let dt_args = {"layout": {"topStart": "pageLength", "topEnd": "search", "bottomStart": "info", "bottomEnd": "paging"}, "order": [], "warn_on_selected_rows_not_rendered": true};
+        dt_args["data"] = data;
+
+        
+        new DataTable(table, dt_args);
+    });
+</script>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-tbl" id="tbl-all-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3.1: An overview of all selected features and assigned group. The prefix GB indicates a feature from Grambank, and WALS is the adapted feature from the WALS database.
+</figcaption>
+</figure>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-de-gibert-etal-2024-new-massive" class="csl-entry" role="listitem">
+Gibert, Ona de, Graeme Nail, Nikolay Arefyev, Marta Bañón, Jelmer van der Linde, Shaoxiong Ji, Jaume Zaragoza-Bernabeu, et al. 2024. <span>“A New Massive Multilingual Dataset for High-Performance Language Technologies.”</span> In <em>Proceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING 2024)</em>, edited by Nicoletta Calzolari, Min-Yen Kan, Veronique Hoste, Alessandro Lenci, Sakriani Sakti, and Nianwen Xue, 1116–28. Torino, Italia: ELRA; ICCL. <a href="https://aclanthology.org/2024.lrec-main.100">https://aclanthology.org/2024.lrec-main.100</a>.
+</div>
+<div id="ref-nivre-etal-2020-universal" class="csl-entry" role="listitem">
+Nivre, Joakim, Marie-Catherine de Marneffe, Filip Ginter, Jan Hajič, Christopher D. Manning, Sampo Pyysalo, Sebastian Schuster, Francis Tyers, and Daniel Zeman. 2020. <span>“<span>U</span>niversal <span>D</span>ependencies V2: An Evergrowing Multilingual Treebank Collection.”</span> In <em>Proceedings of the Twelfth Language Resources and Evaluation Conference</em>, edited by Nicoletta Calzolari, Frédéric Béchet, Philippe Blache, Khalid Choukri, Christopher Cieri, Thierry Declerck, Sara Goggi, et al., 4034–43. Marseille, France: European Language Resources Association. <a href="https://aclanthology.org/2020.lrec-1.497/">https://aclanthology.org/2020.lrec-1.497/</a>.
+</div>
+<div id="ref-nivre-etal-2017-universal" class="csl-entry" role="listitem">
+Nivre, Joakim, Daniel Zeman, Filip Ginter, and Francis Tyers. 2017. <span>“<span>U</span>niversal <span>D</span>ependencies.”</span> In <em>Proceedings of the 15th Conference of the <span>E</span>uropean Chapter of the Association for Computational Linguistics: Tutorial Abstracts</em>, edited by Alexandre Klementiev and Lucia Specia. Valencia, Spain: Association for Computational Linguistics. <a href="https://aclanthology.org/E17-5001/">https://aclanthology.org/E17-5001/</a>.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../2-related_work/related_work.html" class="pagination-link" aria-label="Related Work">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Related Work</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../4-methods/methods.html" class="pagination-link" aria-label="Methods">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Methods</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

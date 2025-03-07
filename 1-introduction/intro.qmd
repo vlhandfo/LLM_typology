@@ -1,0 +1,21 @@
+# Introduction
+
+In recent years, Transformer-based large language models (LLMs) have become a dominant paradigm in NLP, improving the performance of applications in many language-related tasks. Apart from the general assumption that model performance improves as the amount of training data increases, the precise relationship between the size of the dataset and task-specific performance gains is not well-defined. 
+
+This study investigates the learning process of monolingual LLMs trained on a set of typologically diverse languages. Specifically, we evaluate intermediate training checkpoints on a set of morphosyntactic tasks to gain insight into the relationship between the amount of training data and the models' performance on foundational linguistic tasks. 
+
+While languages like English display relatively uniform learning curves across all tasks, others show marked task-specific variations, highlighting the importance of taking linguistic aspects into account. We observe variation in ranges of performance gains across languages and identify typological features correlated with the amount of improvement. Likewise, we see that models trained on different languages learn at different rates, and there are typological features correlated to the point at which the model reaches 90% of its overall performance gains, estimated with a best-fit curve. 
+
+
+<!-- I want to write a paragraph about the motivation for the paper including the following points:
+
+- I want to motivate others to consider linguistic features of a language so they can use a smaller, curated dataset rather than just using a bunch of data
+
+- This will save resources such as energy, memory, compute power.
+
+- Bias increases with larger datasets
+
+- Potentially help set an outline for creation of new datasets, especially for low-resource languages. 
+
+Gemini: "The prevailing paradigm of scaling up large language model training often overlooks the crucial role of language-specific linguistic features, leading to the use of massive, indiscriminately gathered datasets. This approach not only incurs substantial computational costs in terms of energy, memory, and compute power, but also exacerbates the risk of bias amplification inherent in larger datasets. We advocate for a shift towards linguistically informed data curation, demonstrating that comparable or even superior performance can be achieved with smaller, targeted datasets. By strategically leveraging linguistic insights, researchers can minimize resource consumption, mitigate bias, and potentially establish a framework for creating high-quality datasets, especially for low-resource languages. This research aims to inspire the NLP community to prioritize linguistic analysis in dataset creation, fostering a more sustainable, equitable, and efficient approach to LLM development."
+-->
