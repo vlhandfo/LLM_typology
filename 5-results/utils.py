@@ -211,3 +211,44 @@ def get_charts_for_tasks(tasks,
         charts.append(chart)
     
     return charts
+
+def get_task_raw_plot(task, 
+                    df, 
+                    x_domain=[-0.5,4.5],
+                    y_domain=[0, 100],
+                    height=300, 
+                    width=300,
+                    title=""):
+    
+    filtered_df = df[df['Task'] == task].copy()
+    filtered_df["Language"] = filtered_df["Language"].map(LANGS_2_MAPPING)
+    
+    return alt.Chart(filtered_df).mark_line(point=True
+        ).encode(
+            x=alt.X(
+                "N",
+                axis=alt.Axis(labels=True),
+                scale=alt.Scale(domain=x_domain)
+            ),
+            y=alt.Y(
+                "Accuracy:Q",
+                scale=alt.Scale(domain=y_domain)
+            ),
+            color=alt.Color(
+                "Language:N", 
+                scale=alt.Scale(scheme="category20")
+            ),
+            tooltip=[
+                "Language:N",
+                "Task:N",
+                "Accuracy",
+                "Accuracy (normalized):Q",
+                "Step:Q",
+                "Tokens:N",
+                
+            ],
+        ).properties(
+            width=width,
+            height=height,
+            title=title        
+        ).interactive()

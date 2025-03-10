@@ -1,9 +1,16 @@
 ---
 execute: 
-  echo: false
+    echo: false
+
+toc: true
+toc-depth: 4
 ---
 
 # Results
+
+Looking at two paradigms:    
+1. P90: the estimated point at which the model reaches 90 percent of it's overall performance improvement  
+2. Delta: the amount of overall improvement made by the model over the training process. 
 
 ```{python}
 import pandas as pd
@@ -16,7 +23,6 @@ from scipy.stats import pearsonr
 
 DATA_DIR = Path("../data")
 
-tasks = ["dev_Lemmas", "dev_UPOS", "dev_UAS"]
 
 assert DATA_DIR.exists() and DATA_DIR.is_dir(), "Invalid path to data directory."
 
@@ -25,18 +31,24 @@ p90_df = pd.read_csv(DATA_DIR / "p90_df.csv")
 
 delta_df = pd.read_csv(DATA_DIR / "delta_df.csv")
 
-df = pd.read_csv(DATA_DIR / "metrics_df.csv")
-fit_df = pd.read_csv(DATA_DIR / "fit_data.csv")
+df = pd.read_csv(DATA_DIR / "metrics_df.csv", index_col=0)
+fit_df = pd.read_csv(DATA_DIR / "fit_data.csv", index_col=0)
+
 ```
 
 ## Learning Curve Variation
 
-### Variation of a Model
-:::{#fig-curve-variation}
+::: {.callout-caution collapse="true"}
+## Question: When there is little over all improvement, do these curves actually tell us anything?
+
+This point may not be as straight forward as I orginially thought. The main example I saw was for the Japanese model, however, the tokenization strategy might play a bigger role than I thought.
+
 ```{python}
-langs = ['ja', 'en', 'zh']
+langs = ['ja']
 domain = [0, 101]
 title = "Learning Curves for Selected Models"
+
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_UAS", "dev_LAS", "dev_MLAS", "dev_BLEX"]
 
 charts = utils.get_charts_for_langs(langs, df[df['Task'].isin(tasks)], fit_df[fit_df['Task'].isin(tasks)], domain)
 
@@ -45,8 +57,75 @@ alt.vconcat(*charts).properties(
 ).show()
 ```
 
-While the learning curves for English model are rather homogenous, it is not the case for the Japanese model. The learning curves for the Chinese models on UAS and Lemmas are similar to the English model, however, all checkpoints of the Chinese model achieve $> 99\%$ accuracy on lemmatization.
+However, we see that the Indonesian model has the same trend on the dependency parsing tasks, so there is a bit of variation there.
+:::
+
+
+### Variation of a Model
+
+:::{#fig-curve-variation}
+```{python}
+langs = ['id', 'en', 'zh']
+domain = [20, 101]
+title = "Learning Curves for Selected Models"
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_UAS"]
+
+charts = utils.get_charts_for_langs(langs, df[df['Task'].isin(tasks)], fit_df[fit_df['Task'].isin(tasks)], domain)
+
+alt.vconcat(*charts).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+There is some variation between different tasks for different models, but it seems less so than I originally thought.
 ::: 
+
+```{python}
+selected = df[(df['Language'].isin(['id', 'en', 'zh'])) & (df['Task'].isin(tasks))]
+pivoted = selected.pivot_table(
+    index=['Language', 'Task'],
+    columns='Step',
+    values='Accuracy'
+).reset_index()
+
+p90s = []
+for i, row in pivoted.iterrows():
+    lang, task = utils.LANGS_2_MAPPING[row['Language']], row['Task']
+    p90s.append(p90_df[p90_df['Language'] == lang][task].values[0])
+
+pivoted['P90'] = p90s
+```
+
+<details>
+<summary> Show Tables with Raw Values</summary>
+
+:::{#tbl-sel-lemma-raw}
+
+```{python}
+show(pivoted[pivoted['Task']=='dev_Lemmas'][['Language', 'P90', 0, 30, 300, 3050, 31250]], showIndex=False)
+```
+
+Raw values for lemmatization.
+:::
+
+:::{#tbl-sel-upos-raw}
+
+```{python}
+show(pivoted[pivoted['Task']=='dev_UPOS'][['Language', 'P90', 0, 30, 300, 3050, 31250]], showIndex=False)
+```
+
+Raw values for UPOS.
+:::
+
+:::{#tbl-sel-uas-raw}
+
+```{python}
+show(pivoted[pivoted['Task']=='dev_UAS'][['Language', 'P90', 0, 30, 300, 3050, 31250]], showIndex=False)
+```
+
+Raw values for UAS.
+:::
+</details>
 
 ### Variation on the Same Task
 
@@ -65,7 +144,135 @@ alt.hconcat(*charts
 Given a task, different models may learn at different rates than others.
 :::
 
+#### Lemmatization
+
+See learning curves in @fig-task-variation and raw plot in @fig-raw-lemmas.
+
+**Observations:**  
+
+(***Obvious***) Analytic languages (Chinese and Vietnamese) have the lowest value of P90, the smallest range of improvement, and the highest overall accuracy scores on lemmatization.  
+
+
+:::{#fig-raw-lemmas}
+
+```{python}
+utils.get_task_raw_plot("dev_Lemmas", 
+                        df,
+                        y_domain=[60,102],
+                        title="Raw Lemmatization Accuracy"
+                        ).show()
+```
+
+Raw lemmatization accuracy for all languages
+:::
+
+#### UPOS
+
+The curves for UPOS are more homogenous than some of the other tasks, however, there are correlations with marking features and P90 (see @sec-typological-correlations).
+
+:::{#fig-raw-upos}
+```{python}
+
+raw = utils.get_task_raw_plot("dev_UPOS", 
+                        df,
+                        y_domain=[60,102],
+                        title="Raw UPOS Accuracy",
+                        width=150, height=150
+                        )
+curve = utils.get_charts_for_tasks(["dev_UPOS"], 
+                        df,
+                        fit_df
+                        )[0]
+
+alt.hconcat(raw, curve
+).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+Raw UPOS accuracy for all languages
+:::
+
+
+#### Dependency Parsing
+
+:::{#fig-raw-uas-all}
+```{python}
+utils.get_task_raw_plot("dev_UAS", 
+                        df,
+                        y_domain=[20,102],
+                        title="Raw UAS Accuracy"
+                        ).show()
+
+```
+
+Raw UAS accuracy for all languages
+:::
+
+:::{#fig-raw-uas-synthetic}
+```{python}
+alt.hconcat(utils.get_task_raw_plot("dev_UAS", 
+                        df[df['Language'].isin(['ru', 'he', 'el'])],
+                        y_domain=[20,102],
+                        title="Raw UAS Accuracy (Fusional)",
+                        height=175, width=175
+                        ), 
+utils.get_task_raw_plot("dev_UAS", 
+                        df[df['Language'].isin(['tr', 'ja', 'ko'])],
+                        y_domain=[20,102],
+                        title="Raw UAS Accuracy (Agglutinative)",
+                        height=175, width=175
+                        )
+).show()
+
+```
+
+Raw UAS accuracy for fusional languages
+:::
+
+
+```{python}
+title="Learning Curve for Selected Synthetic Languages on UAS"
+
+charts = utils.get_charts_for_tasks(['dev_UAS'], 
+                                    df[df['Language'].isin(['ru', 'he', 'el', 'tr', 'ja', 'ko'])],
+                                    fit_df[fit_df['Language'].isin(['ru', 'he', 'el', 'tr', 'ja', 'ko'])] ,
+                                    width = 300, height = 300
+                                    )
+
+alt.hconcat(*charts
+).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+<br>
+<details>
+<summary> UAS with and without Japanese </summary>
+
+```{python}
+chart_all = utils.get_charts_for_tasks(['dev_UAS'], 
+                                    df, 
+                                    fit_df)[0].properties(title="All languages")
+
+chart_wo_ja = utils.get_charts_for_tasks(['dev_UAS'], 
+                                    df[df['Language'] != 'ja'], 
+                                    fit_df[fit_df['Language'] != 'ja'])[0].properties(
+                                        title="Without Japanese"
+                                    )
+
+title="Learning Curve on UAS without Japanese"
+
+alt.hconcat(chart_all, chart_wo_ja).properties(
+    title=alt.Title(title, anchor="middle", offset=15)
+).show()
+```
+
+</details>
+
 ## Delta Variation
+
+The amount of overall improvement (delta) varies across languages and tasks.
 
 :::{#fig-delta-variation fig-align="center"}
 ```{python}
@@ -104,87 +311,136 @@ alt.hconcat(*charts).show()
 The amount of improvement (delta) varies across different tasks and models.
 :::
 
-## Typological Correlations
+Agglutination is correlated with the amount of overall improvement.
 
 ```{python}
-def get_correlation_df(feats_df, target_df, threshold=0.05):
-    GROUPS = ['marking', 'formation', 'determiners', 'case', 'lexicon', 'order']
-    res = []
-    for task in target_df.columns:
-        # define the target
-        target = target_df[task]
-        for group in GROUPS:
-            # get the subset of features in the group
-            group_feats = feats_df[feats_df['Group'] == group].drop(columns="Group")
-            # convert to language vectors
-            lang_vec = group_feats.T
-            # remove features with low variance
-            for c in lang_vec.columns:
-                if lang_vec[c].value_counts()[0] <= 2:
-                    lang_vec = lang_vec.drop(columns=c)
-                elif lang_vec[c].value_counts()[1] <= 2:
-                    lang_vec = lang_vec.drop(columns=c)
-            # add group sum as predictor
-            lang_vec[f'{group}_sum'] = lang_vec.sum(axis=1)
-            lang_vec = pd.concat((lang_vec, target), axis=1).sort_values(task).drop('Indonesian')
-            
-            # Calculate the pearson correlation
-            for c in lang_vec.columns[:-1]:
-                _corr = pearsonr(lang_vec[c], lang_vec[task])
-                if _corr.pvalue < threshold:
-                    res.append([
-                                task, 
-                                group,
-                                c, 
-                                _corr.statistic,
-                                _corr.pvalue
-                                ])
-    res_df = pd.DataFrame(res, columns=['Task', 'Group', "Feature", "Correlation", "PValue"]).sort_values('Correlation', ascending=False)
-    res_df = res_df.merge(FEATS_DF[['Feature', 'Name']], left_on='Feature', right_on='Feature', how='left'
-                      )
-    return res_df
-
-feats_df = FEATS_DF.copy(
-    ).set_index("Feature", drop=True
-    ).drop(columns=["Name"])
-```
-
-:::{#tbl-corr-p90}
-```{python}
-p90_corr = get_correlation_df(
-            feats_df, 
-            p90_df.set_index('Language'), 
-            threshold=0.01
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_LAS"]
+full_melted = delta_df.melt(id_vars='Language', 
+              var_name='Task', 
+              value_name='Delta'
             )
-p90_corr['Feature'] = p90_corr['Feature'] + " (" + p90_corr['Group'] + ")"
-p90_corr = p90_corr.set_index('Feature', drop=True
-            ).drop(columns=['PValue', 'Group']
-            ).sort_index()
-show(p90_corr[['Name', 'Task', 'Correlation']],
-    classes="compact",
-    lengthMenu=[5, 10]
-)
+full_melted['Agglutinative'] = [1 if x in ["Turkish","Japanese","Korean","Indonesian"] 
+                                else 0 
+                                for x in full_melted['Language']]
+
+melted_df = full_melted[full_melted['Task'].isin(tasks)]
+
+melted_df = melted_df.sort_values(by=['Task', 'Agglutinative', 'Language'])
+y_domain = [0,55]
+charts = []
+
+alt.Chart(melted_df).mark_bar().encode(
+    x=alt.X("Task:N", sort=None, axis=alt.Axis(labelAngle=0)),
+    xOffset=alt.XOffset("Language:N", sort=None),
+    y=alt.Y("Delta:Q"),
+    color=alt.Color("Agglutinative:N"),
+    tooltip=['Language', 'Agglutinative', 'Delta']
+).properties(
+    title={
+        "text": "Overall Improvement on Selected Tasks",
+        "subtitle": "Languages grouped by whether they are primarily agglutinative"
+    },
+    height=200,
+    width=375
+).show()
 ```
 
-Feature correlations with P90 and pvalue <0.01.
+```{python}
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_LAS"]
+
+
+full_melted = full_melted.sort_values(by=['Task', 'Agglutinative', 'Language'])
+
+agg_df = full_melted.groupby(
+            ['Task', 'Agglutinative']
+        ).agg(
+            {'Delta': 'median'}
+        ).reset_index(
+        ).pivot(
+            index='Task', 
+            columns='Agglutinative', 
+            values='Delta'
+        ).reset_index()
+
+agg_df.columns = ['Task', 'Non-Agglutinative', 'Agglutinative']
+
+plot = agg_df.plot(kind="bar", 
+              x='Task', 
+              y=['Non-Agglutinative', 'Agglutinative'], 
+              rot=30,
+              figsize=(6, 2),
+              title="Median Delta Values\nAgglutinative vs. Non-Agglutinative Languages"
+        )
+plot.set_ylabel("Median Delta")
+plot.legend(loc='upper center', bbox_to_anchor=(0.5, -0.6), ncol=2)
+```
+
+:::{#tbl-corr-agg-delta}
+```{python}
+from scipy.stats import pearsonr
+
+agg_corr = pd.DataFrame(columns=['Correlation', 'Pvalue'])
+
+for task, _df in full_melted.groupby("Task"):
+    _corr = pearsonr(_df['Agglutinative'], _df['Delta'])
+    if _corr.pvalue < 0.05:
+        agg_corr.loc[task] = [_corr.statistic, _corr.pvalue]
+
+show(agg_corr)
+```
+
+The correlation and pvalue between agglutinative languages and delta value. 
 :::
 
-:::{#tbl-corr-delta}
+Fusional languages are also correlated with overall improvement.
+
 ```{python}
-delta_corr = get_correlation_df(
-            feats_df, 
-            delta_df.set_index('Language'), 
-            threshold=0.01
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_LAS"]
+full_melted = delta_df.melt(id_vars='Language', 
+              var_name='Task', 
+              value_name='Delta'
             )
-delta_corr['Feature'] = delta_corr['Feature'] + " (" + delta_corr['Group'] + ")"
-delta_corr = delta_corr.set_index('Feature', drop=True
-            ).drop(columns=['PValue', 'Group']
-            ).sort_index()
-show(delta_corr[['Name', 'Task', 'Correlation']],
-    classes="compact",
-    lengthMenu=[5, 10]
-)
+full_melted['Fusional'] = [1 if x in ["Russian", "Greek"] 
+                                else 0 
+                                for x in full_melted['Language']]
+
+melted_df = full_melted[full_melted['Task'].isin(tasks)]
+
+melted_df = melted_df.sort_values(by=['Task', 'Fusional', 'Language'])
+y_domain = [0,55]
+charts = []
+
+alt.Chart(melted_df).mark_bar().encode(
+    x=alt.X("Task:N", sort=None, axis=alt.Axis(labelAngle=0)),
+    xOffset=alt.XOffset("Language:N", sort=None),
+    y=alt.Y("Delta:Q"),
+    color=alt.Color("Fusional:N"),
+    tooltip=['Language', 'Fusional', 'Delta']
+).properties(
+    title={
+        "text": "Overall Improvement on Selected Tasks",
+        "subtitle": "Languages grouped by whether they are primarily fusional"
+    },
+    height=200,
+    width=375
+).show()
 ```
 
-Feature correlations with Delta and pvalue <0.01.
+:::{#tbl-corr-agg-delta}
+```{python}
+agg_corr = pd.DataFrame(columns=['Correlation', 'Pvalue'])
+
+for task, _df in full_melted.groupby("Task"):
+    _corr = pearsonr(_df['Fusional'], _df['Delta'])
+    if _corr.pvalue < 0.05:
+        agg_corr.loc[task] = [_corr.statistic, _corr.pvalue]
+
+show(agg_corr)
+```
+
+The correlation and pvalue between fusional languages and delta value. 
 :::
+
+## Typological Correlations {#sec-typological-correlations}
+
+{{< include correlation_reports.qmd >}}

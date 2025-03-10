@@ -238,39 +238,39 @@ div.csl-indent {
 <section id="evaluation-data" class="level2" data-number="3.2">
 <h2 data-number="3.2" class="anchored" data-anchor-id="evaluation-data"><span class="header-section-number">3.2</span> Evaluation Data</h2>
 <!-- \citep[UD;][]{nivre-etal-2017-universal, nivre-etal-2020-universal} -->
-<p>To evaluate each language model, we use the Universal Dependencies 2.14 treebanks (UD; <span class="citation" data-cites="nivre-etal-2017-universal">Nivre et al. (<a href="../references.html#ref-nivre-etal-2017-universal" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="nivre-etal-2020-universal">(<a href="../references.html#ref-nivre-etal-2020-universal" role="doc-biblioref">2020</a>)</span>). The treebanks are formatted in the same way which allows for simpler comparison of the results of the cross-linguistic experiments. Likewise, as the treebanks include text from different genres, the data covers a broad range of language use.</p>
-<p>The treebanks for the selected languages vary in size, both in terms of number of words and sentences. To ensure the comparability of the results, subsets of each partition of the treebanks were shuffled and normalized by the number of word forms. While the number of sentences in the result subsets still varies, this step makes sure that each model encounters roughly the same number of tokens during the fine-tuning and evaluation steps.</p>
+<p>To evaluate each language model, we use the Universal Dependencies 2.14 treebanks (UD; <span class="citation" data-cites="nivre-etal-2017-universal">Nivre et al. (<a href="../references.html#ref-nivre-etal-2017-universal" role="doc-biblioref">2017</a>)</span>, <span class="citation" data-cites="nivre-etal-2020-universal">(<a href="../references.html#ref-nivre-etal-2020-universal" role="doc-biblioref">2020</a>)</span>). The treebanks are formatted in the same way, which allows for a simpler comparison of the results of the cross-linguistic experiments. Likewise, as the treebanks include text from different genres, the data covers a broad range of language use.</p>
+<p>The treebanks for the selected languages vary in size, both in terms of the number of words and sentences. To ensure the comparability of the results, subsets of each partition of the treebanks were shuffled and normalized by the number of word forms. While the number of sentences in the result subsets still varies, this step ensures that each model encounters roughly the same number of tokens during the fine-tuning and evaluation steps.</p>
 </section>
 <section id="language-and-feature-selection" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="language-and-feature-selection"><span class="header-section-number">3.3</span> Language and Feature Selection</h2>
 <p>The languages for this study were chosen based on two criteria: the availability of resources and linguistic diversity. Available resources include the size of the dataset from the HPLT project and the treebanks from Universal Dependencies, as well as the typological features available in the databases (see <a href="../2-related_work/related_work.html#sec-databases" class="quarto-xref"><span>Section 2.1</span></a>). Linguistic diversity was determined by examining typological, genealogical, and geographic differences available in WALS, specifically the <a href="https://wals.info/chapter/s1#3.1._The_WALS_samples">WALS 100-sample</a>.</p>
 <p>The features were selected from WALS and Grambank, and those from the WALS database were manually coverted to the Question: Binary Encoding format of the Grambank features (e.g., “81A: Order of Subject, Object and Verb” from WALS became <em>WALS81A: Is the dominant word order in a transitive clause SVO?</em>)</p>
-<p>After identifying relevant morphosyntactic features, the set was filtered, removing features with no variance and/or missing values for any selected language. Then, each feature was categorized into a group according to the type of feature it is related to. The largest group, <em>marking</em>, relate to grammatical phenomena which morphologically indicated on words. <em>Order</em> are features related to aspects of word order and syntax. Features in the group <em>formation</em> represent different methods for creating words and clauses. The groups <em>determiners</em> and <em>lexicon</em> correspond to the types of determiners and words, respectively. Lastly, <em>case</em> pertains to morphological marking of cases. A complete list of selected features is shown in <a href="#tbl-all-features" class="quarto-xref">Table&nbsp;<span>3.1</span></a>.</p>
-<p>With the features and language selected, it was straight-forward to combine all of the values to create a binary vector representation for each language. <a href="#fig-pca-langs" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the PCA of the languages according to these vector representations.</p>
+<p>After identifying relevant morphosyntactic features, the set was filtered, removing features with no variance and/or missing values for any selected language. Then, each feature was categorized into a group according to the type of feature it is related to. The largest group, <em>marking</em>, relates to grammatical phenomena which are morphologically indicated on words. <em>Order</em> are features related to aspects of word order and syntax. Features in the group <em>formation</em> represent different methods for creating words and clauses. The groups <em>determiners</em> and <em>lexicon</em> correspond to the types of determiners and words, respectively. Lastly, <em>case</em> pertains to the morphological marking of cases. A complete list of selected features is shown in <a href="#tbl-all-features" class="quarto-xref">Table&nbsp;<span>3.1</span></a>.</p>
+<p>With the features and language selected, it was straightforward to combine all of the values to create a binary vector representation for each language. <a href="#fig-pca-langs" class="quarto-xref">Figure&nbsp;<span>3.1</span></a> shows the PCA of the languages according to these vector representations.</p>
 <div id="fig-pca-langs" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <div aria-describedby="fig-pca-langs-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="ce8de148" class="cell" data-execution_count="1">
+<div id="59f83d0e" class="cell" data-execution_count="1">
 <div class="cell-output cell-output-display">
 
 <style>
-  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed {
+  #altair-viz-bfd2732857334da28057f536a9498cb4.vega-embed {
     width: 100%;
     display: flex;
   }
 
-  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed details,
-  #altair-viz-15a2f4f488e14c58be8f058d7204b6b9.vega-embed details summary {
+  #altair-viz-bfd2732857334da28057f536a9498cb4.vega-embed details,
+  #altair-viz-bfd2732857334da28057f536a9498cb4.vega-embed details summary {
     position: relative;
   }
 </style>
-<div id="altair-viz-15a2f4f488e14c58be8f058d7204b6b9"></div>
+<div id="altair-viz-bfd2732857334da28057f536a9498cb4"></div>
 <script type="text/javascript">
   var VEGA_DEBUG = (typeof VEGA_DEBUG == "undefined") ? {} : VEGA_DEBUG;
   (function(spec, embedOpt){
     let outputDiv = document.currentScript.previousElementSibling;
-    if (outputDiv.id !== "altair-viz-15a2f4f488e14c58be8f058d7204b6b9") {
-      outputDiv = document.getElementById("altair-viz-15a2f4f488e14c58be8f058d7204b6b9");
+    if (outputDiv.id !== "altair-viz-bfd2732857334da28057f536a9498cb4") {
+      outputDiv = document.getElementById("altair-viz-bfd2732857334da28057f536a9498cb4");
     }
     const paths = {
       "vega": "https://cdn.jsdelivr.net/npm/vega@5?noext",
@@ -331,9 +331,9 @@ Figure&nbsp;3.1: PCA of the selected languages according to their feature values
 <div id="tbl-all-features" class="quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="bottom">
 <figure class="quarto-float quarto-float-tbl figure">
 <div aria-describedby="tbl-all-features-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<div id="471d6ce8" class="cell" data-execution_count="2">
+<div id="5a9b02a0" class="cell" data-execution_count="2">
 <div class="cell-output cell-output-display">
-<table id="itables_c468ea43_6b93_4be6_88af_a43ee6d15a1b" class="compact" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
+<table id="itables_66245373_8568_4b82_ad18_5837e34f17e8" class="compact" data-quarto-disable-processing="true" style="table-layout:auto;width:auto;margin:auto;caption-side:bottom">
 <thead>
     <tr style="text-align: right;">
       
@@ -413,7 +413,7 @@ Loading ITables v2.2.1 from the internet...
 <script type="module">
     import {DataTable, jQuery as $} from 'https://www.unpkg.com/dt_for_itables@2.0.13/dt_bundle.js';
 
-    document.querySelectorAll("#itables_c468ea43_6b93_4be6_88af_a43ee6d15a1b:not(.dataTable)").forEach(table => {
+    document.querySelectorAll("#itables_66245373_8568_4b82_ad18_5837e34f17e8:not(.dataTable)").forEach(table => {
         // Define the table data
         const data = [["GB042", "Is there productive overt morphological singular marking on nouns?", "marking"], ["GB043", "Is there productive morphological dual marking on nouns?", "marking"], ["GB044", "Is there productive morphological plural marking on nouns?", "marking"], ["GB082", "Is there overt morphological marking of present tense on verbs?", "marking"], ["GB083", "Is there overt morphological marking on the verb dedicated to past tense?", "marking"], ["GB084", "Is there overt morphological marking on the verb dedicated to future tense?", "marking"], ["GB086", "Is a morphological distinction between perfective and imperfective aspect available on verbs?", "marking"], ["GB089", "Can the S argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB090", "Can the S argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB091", "Can the A argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB092", "Can the A argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB093", "Can the P argument be indexed by a suffix/enclitic on the verb in the simple main clause?", "marking"], ["GB094", "Can the P argument be indexed by a prefix/proclitic on the verb in the simple main clause?", "marking"], ["GB095", "Are variations in marking strategies of core participants based on TAM distinctions?", "marking"], ["GB098", "Are variations in marking strategies of core participants based on person distinctions?", "marking"], ["GB103", "Is there a benefactive applicative marker on the verb (including indexing)?", "marking"], ["GB107", "Can standard negation be marked by an affix, clitic or modification of the verb?", "marking"], ["GB147", "Is there a morphological passive marked on the lexical verb?", "marking"], ["GB047", "Is there a productive morphological pattern for deriving an action/state noun from a verb?", "formation"], ["GB048", "Is there a productive morphological pattern for deriving an agent noun from a verb?", "formation"], ["GB049", "Is there a productive morphological pattern for deriving an object noun from a verb?", "formation"], ["GB081", "Is there productive infixation in verbs?", "formation"], ["GB122", "Is verb compounding a regular process?", "formation"], ["GB124", "Is incorporation of nouns into verbs a productive intransitivizing process?", "formation"], ["GB150", "Is there clause chaining?", "formation"], ["GB020", "Are there definite or specific articles?", "determiners"], ["GB022", "Are there prenominal articles?", "determiners"], ["GB023", "Are there postnominal articles?", "determiners"], ["GB035", "Are there three or more distance contrasts in demonstratives?", "determiners"], ["GB037", "Do demonstratives show a visible-nonvisible distinction?", "determiners"], ["GB057", "Are there numeral classifiers?", "determiners"], ["GB070", "Are there morphological cases for non-pronominal core arguments (i.e. S/A/P)?", "case"], ["GB071", "Are there morphological cases for pronominal core arguments (i.e. S/A/P)?", "case"], ["GB072", "Are there morphological cases for oblique non-pronominal NPs (i.e. not S/A/P)?", "case"], ["GB073", "Are there morphological cases for independent oblique personal pronominal arguments (i.e. not S/A/P)?", "case"], ["GB074", "Are there prepositions?", "lexicon"], ["GB075", "Are there postpositions?", "lexicon"], ["GB117", "Is there a copula for predicate nominals?", "lexicon"], ["GB126", "Is there an existential verb?", "lexicon"], ["GB030", "Is there a gender distinction in independent 3rd person pronouns?", "lexicon"], ["GB132", "Is a pragmatically unmarked constituent order verb-medial for transitive clauses?", "order"], ["GB133", "Is a pragmatically unmarked constituent order verb-final for transitive clauses?", "order"], ["WALS81A", "Is the dominant word order in a transitive clause SVO?", "order"], ["WALS83A", "Is the dominant word order of lexical object and verb VO?", "order"], ["WALS85A", "Are prepositions the dominant type of adposition with a noun phrase?", "order"], ["WALS86A", "Is the dominant order in a genitive noun phrase NGen?", "order"], ["WALS87A", "Is the dominant order of modifying adjective and noun AdjN?", "order"], ["WALS88A", "Is the dominant order of demonstrative and noun DemN?", "order"], ["WALS90A", "Does a relative clause predominatly follow a noun?", "order"], ["WALS92A", "Does a question particle predominatly come at the end of a sentence?", "order"], ["WALS93A", "Is the position of interrogative phrases obligatory initial in content questions?", "order"], ["WALS95A", "Is the dominant word order for object, verb, and adposition VO&Prep?", "order"], ["WALS96A", "Is the dominant word order for object, verb, and relative clause VO&NRel?", "order"], ["WALS97A", "Is the dominant word order for object, verb, and adjective VO&NAdj?", "order"], ["WALS143A", "Does clausal negation predominantly precede the verb?", "order"], ["WALS144A", "Is the order of negation predominantly SNegVO?", "order"]];
 

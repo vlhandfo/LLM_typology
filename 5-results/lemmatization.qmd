@@ -1,0 +1,3 @@
+
+*Analytic languages do well in lemmatization, don't need a lot of learning*
+

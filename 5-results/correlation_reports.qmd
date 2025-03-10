@@ -1,0 +1,222 @@
+```{python}
+import pandas as pd
+import altair as alt
+
+from itables import show
+from pathlib import Path
+from scipy.stats import pearsonr
+
+DATA_DIR = Path("../data")
+
+tasks = ["dev_Lemmas", "dev_UPOS", "dev_UAS"]
+
+assert DATA_DIR.exists() and DATA_DIR.is_dir(), "Invalid path to data directory."
+
+FEATS_DF = pd.read_csv(DATA_DIR / "feature_values.csv", index_col=0)
+p90_df = pd.read_csv(DATA_DIR / "p90_df.csv")
+
+delta_df = pd.read_csv(DATA_DIR / "delta_df.csv")
+
+df = pd.read_csv(DATA_DIR / "metrics_df.csv")
+fit_df = pd.read_csv(DATA_DIR / "fit_data.csv")
+```
+
+:::{#tbl-features tbl-cap-location="bottom"}
+```{python}
+show(FEATS_DF[['Feature', 'Name', 'Group']], 
+    classes="compact",
+    showIndex=False)
+```
+
+The selected features from Grambank and WALS.
+:::
+
+```{python}
+def get_correlation_df(feats_df, 
+                       target_df, 
+                       threshold=0.05, 
+                       var_acceptance=0, 
+                       drop_id=False):
+    GROUPS = ['marking', 'formation', 'determiners', 'case', 'lexicon', 'order']
+    res = []
+    for task in target_df.columns:
+        # define the target
+        target = target_df[task]
+        for group in GROUPS:
+            # get the subset of features in the group
+            group_feats = feats_df[feats_df['Group'] == group].drop(columns="Group")
+            # convert to language vectors
+            lang_vec = group_feats.T
+            
+            # remove features with low variance
+            for c in lang_vec.columns:
+                if lang_vec[c].value_counts()[0] <= var_acceptance:
+                    lang_vec = lang_vec.drop(columns=c)
+                elif lang_vec[c].value_counts()[1] <= var_acceptance:
+                    lang_vec = lang_vec.drop(columns=c)
+                    
+            # add group sum as predictor
+            lang_vec[f'{group}_sum'] = lang_vec.sum(axis=1)
+            lang_vec = pd.concat((lang_vec, target), axis=1).sort_values(task)
+            if drop_id:
+                lang_vec = lang_vec.drop('Indonesian')
+                
+            
+            # Calculate the pearson correlation
+            for c in lang_vec.columns[:-1]:
+                _corr = pearsonr(lang_vec[c], lang_vec[task])
+                if _corr.pvalue < threshold:
+                    res.append([
+                                task, 
+                                group,
+                                c, 
+                                _corr.statistic,
+                                _corr.pvalue
+                                ])
+    res_df = pd.DataFrame(res, columns=['Task', 'Group', "Feature", "Correlation", "PValue"]
+                        ).sort_values('Correlation', ascending=False
+                        ).merge(FEATS_DF[['Feature', 'Name']], left_on='Feature', right_on='Feature', how='left'
+                        ).fillna({'Name': 'Feature group sum'})
+                        
+    return res_df
+
+feats_df = FEATS_DF.copy(
+    ).set_index("Feature", drop=True
+    ).drop(columns=["Name"])
+
+```
+
+### Correlations with P90
+
+:::{.callout-note}
+Remember, P90 is better when lower. That means that the estimated point of 90 percent of all improvement occurs earlier in the learning process.
+:::
+
+These correlations include all 11 languages and all 56 features individually. There is an additional feature, `{GROUP}_sum`, which is a count of the number of features present in the given group. 
+
+
+```{python}
+p90_corr = get_correlation_df(feats_df, 
+                              p90_df.set_index('Language', drop=True), 
+                              threshold=0.05)
+```
+
+:::{#tbl-features tbl-cap-location="bottom"}
+
+```{python}
+show(p90_corr, classes="compact")
+```
+
+The features with correlations with P90 and pvalue < 0.05.
+:::
+
+#### Low variance
+
+Low variance features are those that have <2 languages that are different than the rest.
+
+```{python}
+corr_feats = FEATS_DF[FEATS_DF['Feature'].isin(p90_corr['Feature'].unique())].sort_values('Feature')
+corr_feats = corr_feats.set_index("Feature", drop=True)
+
+low_variance = set()
+for f, f_vec in corr_feats.iterrows():
+    counts = f_vec.drop(['Group', 'Name']).value_counts()
+    for count in counts:
+        if count <= 2:
+            low_variance.add(f)
+
+
+print("\nLow variance features:", sorted(low_variance))
+show(corr_feats.drop(columns=['Group', 'Name']).T,
+    classes="compact",
+    paging=False,
+    autoWidth=False)
+```
+
+#### Correlations with UPOS-P90
+
+**Feature GB044:** Is there productive morphological plural marking on nouns?
+
+:::{#fig-upos-p90-gb044}
+```{python}
+
+upos_df = p90_df[['Language', 'dev_UPOS']].copy()
+upos_df = upos_df.set_index('Language', drop=True).sort_values('dev_UPOS')
+gb044 = corr_feats.loc['GB044'].drop(['Group', 'Name']).astype(int)
+upos_df['GB044'] = gb044
+upos_df = upos_df.reset_index()
+
+points = alt.Chart(upos_df).mark_point(size=60, filled=True).encode(
+    x=alt.X('Language:N', sort=None, axis=alt.Axis(labelAngle=-30)),
+    y=alt.Y('dev_UPOS:Q', scale=alt.Scale(domain=[1.75, 3.1])),
+    color=alt.Color('GB044:N', scale=alt.Scale(scheme="category10")),
+    tooltip=['Language', 'dev_UPOS']
+).properties(
+    width = 375,
+    height = 250,
+    title= "P90 for all Languages on UPOS"
+)
+
+hline1 = alt.Chart(pd.DataFrame({'y': [3]})).mark_rule(
+    color='green', 
+    strokeDash=[5,5]
+).encode(
+        y='y:Q'
+)
+hline2 = alt.Chart(pd.DataFrame({'y': [2]})).mark_rule(
+    color='green', 
+    strokeDash=[5,5]
+).encode(
+        y='y:Q'
+)
+
+
+(points + hline1 + hline2).show()
+
+```
+
+There is a clear division for those languages with the feature GB044=1 and those without. *Note*  Here, we can debate that Indonesian should be encoded as a 1.
+:::
+
+### Correlations with Delta
+
+```{python}
+delta_corr = get_correlation_df(feats_df, 
+                                delta_df.set_index('Language', drop=True), 
+                                threshold=0.01)
+```
+
+:::{#tbl-features tbl-cap-location="bottom"}
+
+```{python}
+show(delta_corr, classes="compact", paging=False)
+```
+
+The features with correlations with delta and pvalue < 0.01. There is a different threshold for acceptance here to limit the number of correlations because there were 56 task/feature pairs with pvalues < 0.05.
+:::
+
+#### Low variance
+
+In this case, there were no features with low variance.
+
+```{python}
+corr_feats = FEATS_DF[FEATS_DF['Feature'].isin(delta_corr['Feature'].unique())].sort_values('Feature')
+corr_feats = corr_feats.set_index("Feature", drop=True)
+
+low_variance = set()
+for f, f_vec in corr_feats.iterrows():
+    counts = f_vec.drop(['Group', 'Name']).value_counts()
+    for count in counts:
+        if count <= 2:
+            low_variance.add(f)
+
+
+# # No low variance features
+print("\nLow variance features:", sorted(low_variance))
+
+show(corr_feats.drop(columns=['Group', 'Name']).T,
+    classes="compact",
+    paging=False,
+    autoWidth=False)
+```
+
