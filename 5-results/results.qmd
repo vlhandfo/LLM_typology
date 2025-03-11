@@ -277,7 +277,7 @@ The amount of overall improvement (delta) varies across languages and tasks.
 :::{#fig-delta-variation fig-align="center"}
 ```{python}
 selected_languages = ["Vietnamese", "Chinese", "English", "Korean", "Russian"]
-y_domain = [0,55]
+y_domain = [0,1.5]
 
 melted_df = delta_df[['Language'] + tasks].melt(id_vars='Language', 
               var_name='Task', 
@@ -311,7 +311,9 @@ alt.hconcat(*charts).show()
 The amount of improvement (delta) varies across different tasks and models.
 :::
 
-Agglutination is correlated with the amount of overall improvement.
+~~Agglutination is correlated with the amount of overall improvement.~~
+
+**UPDATE:** while there is a visual difference, the correlation is no longer significant.
 
 ```{python}
 tasks = ["dev_Lemmas", "dev_UPOS", "dev_LAS"]
@@ -383,16 +385,15 @@ agg_corr = pd.DataFrame(columns=['Correlation', 'Pvalue'])
 
 for task, _df in full_melted.groupby("Task"):
     _corr = pearsonr(_df['Agglutinative'], _df['Delta'])
-    if _corr.pvalue < 0.05:
-        agg_corr.loc[task] = [_corr.statistic, _corr.pvalue]
+    agg_corr.loc[task] = [_corr.statistic, _corr.pvalue]
 
 show(agg_corr)
 ```
 
-The correlation and pvalue between agglutinative languages and delta value. 
+The correlation and pvalue between agglutinative languages and delta value. None of the correlations are statistically significant.
 :::
 
-Fusional languages are also correlated with overall improvement.
+Fusional languages are also correlated with overall improvement on lemmatization.
 
 ```{python}
 tasks = ["dev_Lemmas", "dev_UPOS", "dev_LAS"]

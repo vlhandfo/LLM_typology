@@ -104,7 +104,10 @@ p90_corr = get_correlation_df(feats_df,
 :::{#tbl-features tbl-cap-location="bottom"}
 
 ```{python}
-show(p90_corr, classes="compact")
+show(p90_corr, 
+    classes="compact", 
+    paging=True,
+    lengthMenu=[5,10])
 ```
 
 The features with correlations with P90 and pvalue < 0.05.
@@ -112,8 +115,11 @@ The features with correlations with P90 and pvalue < 0.05.
 
 #### Low variance
 
+:::{.callout-note}
 Low variance features are those that have <2 languages that are different than the rest.
+:::
 
+:::{#tbl-corr-feats-p90}
 ```{python}
 corr_feats = FEATS_DF[FEATS_DF['Feature'].isin(p90_corr['Feature'].unique())].sort_values('Feature')
 corr_feats = corr_feats.set_index("Feature", drop=True)
@@ -129,9 +135,12 @@ for f, f_vec in corr_feats.iterrows():
 print("\nLow variance features:", sorted(low_variance))
 show(corr_feats.drop(columns=['Group', 'Name']).T,
     classes="compact",
-    paging=False,
+    paging=True,
     autoWidth=False)
 ```
+
+The values of the features correlated with P90.
+:::
 
 #### Correlations with UPOS-P90
 
@@ -183,22 +192,27 @@ There is a clear division for those languages with the feature GB044=1 and those
 ```{python}
 delta_corr = get_correlation_df(feats_df, 
                                 delta_df.set_index('Language', drop=True), 
-                                threshold=0.01)
+                                threshold=0.05)
 ```
 
 :::{#tbl-features tbl-cap-location="bottom"}
 
 ```{python}
-show(delta_corr, classes="compact", paging=False)
+show(delta_corr, 
+    classes="compact",
+    lengthMenu=[5,10])
 ```
 
-The features with correlations with delta and pvalue < 0.01. There is a different threshold for acceptance here to limit the number of correlations because there were 56 task/feature pairs with pvalues < 0.05.
+The features with correlations with delta and pvalue < 0.05. 
 :::
 
 #### Low variance
 
-In this case, there were no features with low variance.
+:::{.callout-note}
+Low variance features are those that have <2 languages that are different than the rest.
+:::
 
+:::{#tbl-corr-feats-delta}
 ```{python}
 corr_feats = FEATS_DF[FEATS_DF['Feature'].isin(delta_corr['Feature'].unique())].sort_values('Feature')
 corr_feats = corr_feats.set_index("Feature", drop=True)
@@ -220,3 +234,5 @@ show(corr_feats.drop(columns=['Group', 'Name']).T,
     autoWidth=False)
 ```
 
+The values of the correlated features.
+:::
